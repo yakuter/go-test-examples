@@ -4,8 +4,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
 func TestPingRoute(t *testing.T) {
@@ -15,6 +13,13 @@ func TestPingRoute(t *testing.T) {
 	req, _ := http.NewRequest("GET", "/ping", nil)
 	router.ServeHTTP(w, req)
 
-	assert.Equal(t, 200, w.Code)
-	assert.Equal(t, "pong", w.Body.String())
+	// Status code test
+	if w.Code != 200 {
+		t.Error("Http test isteği başarısız")
+	}
+
+	// Return value test
+	if w.Body.String() != "pong" {
+		t.Error("Dönen cevap farklı, test başarısız")
+	}
 }
