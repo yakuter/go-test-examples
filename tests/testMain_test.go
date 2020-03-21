@@ -13,11 +13,18 @@ func TestB(t *testing.T) {
 	t.Log("Test B çalıştı")
 }
 
+func setup() {
+	// Test için hazırlık
+}
+func teardown() {
+	// Testten sonra temizlenecekler
+}
+
 func TestMain(m *testing.M) {
-	// <setup code>
+	setup()
 	exitVal := m.Run()
 	if exitVal == 0 {
-		// <tear-down code>
+		teardown()
 	}
 	os.Exit(exitVal)
 }

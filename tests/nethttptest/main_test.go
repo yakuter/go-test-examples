@@ -16,16 +16,13 @@ func TestHttp(t *testing.T) {
 	w := httptest.NewRecorder()
 	handler(w, req)
 
-	resp := w.Result()
-	body := w.Body.String()
-
 	// Status code test
-	if resp.StatusCode != 200 {
+	if w.Code != 200 {
 		t.Error("Http test isteği başarısız")
 	}
 
 	// Return value test
-	if body != "pong3" {
+	if w.Body.String() != "pong" {
 		t.Error("Dönen cevap farklı, test başarısız")
 	}
 
