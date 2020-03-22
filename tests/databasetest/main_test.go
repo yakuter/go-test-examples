@@ -1,12 +1,15 @@
 package main
 
 import (
+	"fmt"
+	"regexp"
 	"testing"
+	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
 )
 
-func TestFindDatabaseRecord(t *testing.T) {
+func TestFind(t *testing.T) {
 	// the db satisfy the sql.DB struct
 	db, mock, err := sqlmock.New()
 	if err != nil {
@@ -26,4 +29,37 @@ func TestFindDatabaseRecord(t *testing.T) {
 	if _, err := myDB.Find(1); err != nil {
 		t.Errorf("something went wrong: %s", err.Error())
 	}
+}
+
+func TestAdd(t *testing.T) {
+	// the db satisfy the sql.DB struct
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+	}
+	defer db.Close()
+
+	var id int64
+	task := Task{
+		Title:       "React Native Öğren",
+		StartDate:   time.Now(),
+		DueDate:     time.Now(),
+		Status:      true,
+		Priority:    true,
+		Description: "Mobil uygulama geliştirme artık günümüzün olmazsa olmazı.",
+		CreatedAt:   time.Now(),
+	}
+
+	mock.ExpectQuery(regexp.QuoteMeta(
+		`INSERT INTO tasks (title,start_date,due_date,status,priority,description,created_at) VALUES($1,$2,$3,$4,$5,$6,$7)`)).
+		WithArgs(task.Title, task.StartDate, task.DueDate, task.Status, task.Priority, task.Description, task.CreatedAt).
+		WillReturnRows(sqlmock.NewRows([]string{"id", "err"}).AddRow(id, err))
+
+	myDB := NewRepository(db) // passes the mock to our code
+
+	lastID, err := myDB.Add(task)
+	if err != nil {
+		t.Errorf("something went wrong: %s", err.Error())
+	}
+	fmt.Println(lastID)
 }
