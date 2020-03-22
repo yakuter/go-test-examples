@@ -46,7 +46,7 @@ func TestMockTopla(t *testing.T) {
 	// setup expectations
 	mockRepo.On("MockTopla", []int{2, 3}).Return(5, nil)
 
-	// call the code we are testing
+	// Testini yaptığımız kodu çağıralım
 	testMatematik := Matematik(mockRepo)
 
 	sonuc, err := testMatematik.MockTopla([]int{2, 3})
