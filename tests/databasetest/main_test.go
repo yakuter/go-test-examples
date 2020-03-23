@@ -53,7 +53,7 @@ func TestAdd(t *testing.T) {
 	mock.ExpectQuery(regexp.QuoteMeta(
 		`INSERT INTO tasks (title,start_date,due_date,status,priority,description,created_at) VALUES($1,$2,$3,$4,$5,$6,$7)`)).
 		WithArgs(task.Title, task.StartDate, task.DueDate, task.Status, task.Priority, task.Description, task.CreatedAt).
-		WillReturnRows(sqlmock.NewRows([]string{"id", "err"}).AddRow(id, err))
+		WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(id))
 
 	myDB := NewRepository(db) // passes the mock to our code
 

@@ -16,6 +16,6 @@ func Topla(sayilar []int) int {
 func TestTopla(t *testing.T) {
 	sonuc := Topla([]int{2, 5})
 	if sonuc != 7 {
-		t.Error("Beklenen sonuc 6, elde edilen ", sonuc)
+		t.Error("Beklenen sonuc 7, elde edilen ", sonuc)
 	}
 }
