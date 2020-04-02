@@ -1,25 +1,29 @@
 package main
 
 import (
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 )
 
-func TestPingRoute(t *testing.T) {
-	router := setupRouter()
+func TestHttp(t *testing.T) {
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		io.WriteString(w, "pong")
+	}
 
+	req := httptest.NewRequest("GET", "/ping", nil)
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/ping", nil)
-	router.ServeHTTP(w, req)
+	handler(w, req)
 
 	// Status code test
-	if w.Code != 200 {
+	if w.Code != 404 {
 		t.Error("Http test isteği başarısız")
 	}
 
 	// Return value test
-	if w.Body.String() != "pong" {
+	if w.Body.String() != "pongd" {
 		t.Error("Dönen cevap farklı, test başarısız")
 	}
+
 }
